@@ -1,0 +1,72 @@
+/*----------------------------------------------------------------------------
+ *    Author: György Kovács                                                   |
+ *    Created: 05 Jul 2020                                                    |
+ *    Description: Create scrolling text elements on character LCD display    |
+ *----------------------------------------------------------------------------
+ */
+#include <Arduino.h>
+
+#include <LiquidCrystal.h> // LCD
+#include <LcdCustomScroll.h>
+
+//First, instantiate the LCD object (change values as needed)
+				//rs, en, d4, d5, d6, d7
+LiquidCrystal lcd(4, 5, 6, 7, 8, 9);
+
+//Second, instantiate the scrolling text object(s)
+LcdCustomScroll scroll1(lcd);
+LcdCustomScroll scroll2(lcd);
+LcdCustomScroll scroll3(lcd);
+LcdCustomScroll scroll4(lcd);
+
+char longText1[] = "Let's see how this scrolling text works !";
+char longText2[] = "The quick brown fox jumps over the lazy dog";
+char longText3[] = "This is the third row and this scrolling text is awesome ! ";
+char longText4[] = "We do nothing in the fourth line :)";
+
+unsigned long timerCnt = 0;
+byte counter = 0;
+
+
+    void setup() {
+    	lcd.begin(20, 4);//columns, rows
+
+    	//First row
+    	scroll1.init(longText1, 300, 0, 9, 16);//Scroll speed(ms), row, from column, to column
+    	scroll1.scrollMode(SCMODE1);//Scroll modes: SCMODE1, SCMODE2, SCMODE3, SCMODE4
+
+    	//Second row
+    	scroll2.init(longText2, 500, 1, 3, 15);
+    	scroll2.scrollMode(SCMODE2);
+
+    	//Third row
+    	scroll3.init(longText3, 500, 2, 0, 20);
+    	scroll3.scrollMode(SCMODE3);
+
+    	//Fourth row
+    	scroll4.init(longText4, 200, 3, 10, 19);
+    	scroll4.scrollMode(SCMODE4);
+
+    }//end setup
+
+    void loop() {
+		//Print counter to LCD
+    	if(millis() - timerCnt >= 1000){
+    		char shortText[10];
+    		timerCnt = millis();
+    		if(!counter){
+    			snprintf_P(shortText, sizeof(shortText), PSTR("        "));
+        		lcd.setCursor(0,0);
+        		lcd.print(shortText);
+    		}
+    		snprintf_P(shortText, sizeof(shortText), PSTR("Cnt :%i"),counter);
+    		lcd.setCursor(0,0);
+    		lcd.print(shortText);
+    		counter++;
+    	}//end if print counter
+    	
+    	scroll1.scrollText();
+    	scroll2.scrollText();
+    	scroll3.scrollText();
+    	scroll4.scrollText();
+    }//end main loop

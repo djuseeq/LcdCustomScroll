@@ -1,0 +1,21 @@
+#######################################
+# Syntax Coloring Map For LcdCustomScroll
+####################################### 
+# Class
+#######################################
+
+LcdCustomScroll_I2C	KEYWORD1
+LcdCustomScroll	KEYWORD1
+
+#######################################
+# Methods and Functions 
+#######################################	
+
+init	KEYWORD2
+scrollMode	KEYWORD2
+scrollText	KEYWORD2
+
+#######################################
+# Constants
+#######################################
+
